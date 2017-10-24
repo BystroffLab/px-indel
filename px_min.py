@@ -32,5 +32,10 @@ def genSymmetry():
 def runMinimization():
     None
 
+def genCoordinates(structure,chain,resNum):
+    '''Generator that yields atom name and spacial coordinates for each atom in
+    a given residue'''
+    for atom in structure[0][chain][resNum].get_atoms():
+        yield (atom.get_id(),atom.get_coord())
 
 if __name__ == "__main__": main()
