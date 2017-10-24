@@ -11,6 +11,7 @@ def main():
     parser.add_option("-o","--out",dest="outFile",help="Filename of minimized PDB to be output",metavar="out.pdb")
     # Alanine insertion location option
     parser.add_option("-a","--Ala",type="int",dest="alaRegions",nargs=4,help="Beginning and end residue numbers for both polyA regions of T7 endoI",metavar="ABeg AEnd BBeg BEnd")
+    parser.add_option("-c","--cst",dest="cst",help="cst file in which to save constraints",metavar="constraints.cst",default="constraints.cst")
     
     (options,args) = parser.parse_args()
     
