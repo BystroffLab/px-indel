@@ -1,6 +1,7 @@
 import optparse
 import Bio
 import Bio.PDB
+from commands import getstatusoutput as run
 from rosetta import *
 
 def main():
@@ -26,9 +27,20 @@ def addConstraints(isPx = False):
     None
     PXChains = ["C","D","E","F"]
     
-def genSymmetry():
-    ''' Generate the symmetry files for use in rosetta '''
-    None
+def genSymmetry(pdb):
+    ''' Generate the symmetry files for use in rosetta.  calls the
+    make_symmdef_file.pl script'''
+    import sys
+    # perl make_symmdef_file.pl -m NCS -a A -i B -p filename
+    script = "perl make_symmdef_file.pl"
+    cmd = "%s -m NCS -a A -i B -p %s"%(script,pdb)
+    status,output = run(cmd)
+    if status:
+        sys.stderr.write("%i\n"%(status))
+        sys.stderr.write("%s\n"%(output))
+        return False
+    return True
+    
 
 def runMinimization():
     None
