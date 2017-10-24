@@ -21,8 +21,9 @@ def main():
     
     
     
-def addConstraints():
+def addConstraints(isPx = False):
     None
+    PXChains = ["C","D","E","F"]
     
 def genSymmetry():
     ''' Generate the symmetry files for use in rosetta '''
