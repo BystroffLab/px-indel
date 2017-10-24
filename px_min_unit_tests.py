@@ -13,10 +13,6 @@ class test_px_min(unittest.TestCase):
         self.parser = Bio.PDB.PDBParser()
         self.trpCage = self.parser.get_structure("trp-cage","testFiles/1L2Y.pdb")
         
-        
-    def tearDown(self):
-        None
-        
     def test_genCoordinates(self):
         output = [(atom,coords) for (atom,coords) in genCoordinates(self.trpCage,"A",7)]
         self.assertEqual(len(output),19)
