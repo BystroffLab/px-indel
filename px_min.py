@@ -1,4 +1,6 @@
 import optparse
+import Bio
+import Bio.PDB
 from rosetta import *
 
 def main():
