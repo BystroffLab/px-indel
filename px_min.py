@@ -3,7 +3,7 @@ import Bio
 import Bio.PDB
 import sys
 from commands import getstatusoutput as run
-from rosetta import *
+# from rosetta import *
 
 def main():
     parser = optparse.OptionParser()
@@ -24,9 +24,19 @@ def main():
     
     
     
-def addConstraints(isPx = False):
-    None
+def addConstraints(structure,region1,region2):
     PXChains = ["C","D","E","F"]
+    constraints = []
+    # Get PX CoordinateConstraints
+    for chain in PXChains:
+        for res in structure[0][chain]:
+            for (atom,(x,y,z)) in genCoordinates(structure,chain,res):
+                # CoordinateConstraint atom res atom2 res2 x y z HARMONIC x0 sd
+                constraint = "CoordinateConstraint %s %i%c N 1A %f %f %f HARMONIC 1.0 0.1"%(atom,res,chain,x,y,z)
+                constraints.append(constraint)
+    #generate beta-beta constraints between region1 and region2            
+    return constraints
+    
     
 def genSymmetry(pdb):
     ''' Generate the symmetry files for use in rosetta.  calls the
@@ -45,10 +55,15 @@ def genSymmetry(pdb):
 def runMinimization():
     None
 
-def genCoordinates(structure,chain,resNum):
+def genCoordinates(structure,chain,resNum=0):
     '''Generator that yields atom name and spacial coordinates for each atom in
     a given residue'''
-    for atom in structure[0][chain][resNum].get_atoms():
-        yield (atom.get_id(),atom.get_coord())
+    if resNum != 0:
+        for atom in structure[0][chain][resNum].get_atoms():
+            yield (atom.get_id(),atom.get_coord())
+    else:
+        for res in structure[0][chain]:
+            for atom in res:
+                yield(atom.get_id(),atom.get_coord())
 
 if __name__ == "__main__": main()
