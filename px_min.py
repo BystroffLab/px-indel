@@ -39,14 +39,13 @@ def addConstraints(structure,region1,region2):
     return constraints
     
     
-def genSymmetry(pdb):
+def genSymmetry(pdb,m='NCS',a='A',i='B',d='C D E F'):
     ''' Generate the symmetry files for use in rosetta.  calls the
     make_symmdef_file.pl script'''
-    import sys
     # perl make_symmdef_file.pl -m NCS -a A -i B -p filename
     script = "make_symmdef_file.pl"
     out = pdb.split(".pdb")[0] + ".symm"
-    cmd = ["perl",script,'-m','NCS','-a','A','-i','B','-d','C D E F','-p',pdb]
+    cmd = ["perl",script,'-m',m,'-a',a,'-i',i,'-d',d,'-p',pdb]
     p = subprocess.Popen(cmd,stdout = subprocess.PIPE,stderr=subprocess.PIPE)
     (stdoutdata,stderrdata) = p.communicate()
     out = open("%s.symm"%(pdb.split(".pdb")[0]),"w+")
