@@ -41,7 +41,11 @@ def addConstraints(structure,region1,region2):
     
 def genSymmetry(pdb,m='NCS',a='A',i='B',d='C D E F'):
     ''' Generate the symmetry files for use in rosetta.  calls the
-    make_symmdef_file.pl script'''
+    make_symmdef_file.pl script
+    m is the symmetry type
+    a is the first chain of the symmetric group
+    i specifies other symmetric chains
+    d specifies non-symmetric chains to maintain'''
     # perl make_symmdef_file.pl -m NCS -a A -i B -p filename
     script = "make_symmdef_file.pl"
     out = pdb.split(".pdb")[0] + ".symm"
