@@ -2,7 +2,8 @@ import optparse
 import Bio
 import Bio.PDB
 import sys
-from commands import getstatusoutput as run
+# from commands import getstatusoutput as run
+import subprocess
 # from rosetta import *
 
 def main():
@@ -41,16 +42,18 @@ def addConstraints(structure,region1,region2):
 def genSymmetry(pdb):
     ''' Generate the symmetry files for use in rosetta.  calls the
     make_symmdef_file.pl script'''
+    import sys
     # perl make_symmdef_file.pl -m NCS -a A -i B -p filename
-    script = "perl make_symmdef_file.pl"
-    cmd = "%s -m NCS -a A -i B -p %s"%(script,pdb)
-    status,output = run(cmd)
-    if status:
-        sys.stderr.write("%i\n"%(status))
-        sys.stderr.write("%s\n"%(output))
-        return False
+    script = "make_symmdef_file.pl"
+    out = pdb.split(".pdb")[0] + ".symm"
+    cmd = ["perl",script,'-m','NCS','-a','A','-i','B','-d','C D E F','-p',pdb]
+    p = subprocess.Popen(cmd,stdout = subprocess.PIPE,stderr=subprocess.PIPE)
+    (stdoutdata,stderrdata) = p.communicate()
+    out = open("%s.symm"%(pdb.split(".pdb")[0]),"w+")
+    out.write(stdoutdata)
+    out.close()
+    if p.returncode != 0: return False
     return True
-    
 
 def runMinimization():
     None

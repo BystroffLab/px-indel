@@ -47,5 +47,6 @@ class test_genSymmetry(unittest.TestCase):
         self.assertTrue(os.path.isfile("%s_model_AB.pdb"%(stem)))
         self.assertTrue(os.path.isfile("%s_symm.pdb"%(stem)))
         self.assertTrue(os.path.isfile("%s.kin"%(stem)))
+        self.assertTrue(os.path.isfile("%s.symm"%(stem)))
         
 if __name__ == "__main__": unittest.main()
