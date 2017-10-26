@@ -7,6 +7,7 @@ import numpy as np
 import shutil
 import os
 import os.path
+import StringIO
 from commands import getstatusoutput as run
 
 def diff(a,b): return abs(a-b)
@@ -40,7 +41,7 @@ class test_genSymmetry(unittest.TestCase):
     def test_scriptRuns(self):
         self.assertTrue(genSymmetry("testFiles/SymmTest/symtest.pdb"))
         
-    def test_FilesOutput(self):
+    def test_filesOutput(self):
         stem = "testFiles/SymmTest/symtest"
         genSymmetry("testFiles/SymmTest/symtest.pdb")
         self.assertTrue(os.path.isfile("%s_INPUT.pdb"%(stem)))
@@ -49,4 +50,30 @@ class test_genSymmetry(unittest.TestCase):
         self.assertTrue(os.path.isfile("%s.kin"%(stem)))
         self.assertTrue(os.path.isfile("%s.symm"%(stem)))
         
+class test_makeBlueprint(unittest.TestCase):
+    
+    def setUp(self):
+        self.blueprint = StringIO.StringIO()
+        
+    def tearDown(self):
+        self.blueprint.close()
+        
+    def test_empty(self):
+        makeBlueprint(self.blueprint,(0,0))
+        self.assertEqual(self.blueprint.getvalue(),"")
+        
+    def test_range(self):
+        makeBlueprint(self.blueprint,(10,30))
+        blueprint = self.blueprint.getvalue().split("\n")
+        i = 10
+        for line in blueprint:
+            if i == 31: targetString = ""
+            else: targetString = "%i A E ALLAA"%(i)
+            self.assertEqual(line,targetString)
+            i += 1
+            
+    def test_one(self):
+        makeBlueprint(self.blueprint,(1,1))
+        self.assertEqual(self.blueprint.getvalue(),"1 A E ALLAA\n")
+
 if __name__ == "__main__": unittest.main()

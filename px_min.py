@@ -57,9 +57,14 @@ def genSymmetry(pdb,m='NCS',a='A',i='B',d='C D E F'):
     if p.returncode != 0: return False
     return True
 
-def makeBlueprint(pdb,region1,region2):
-    '''Generates the blueprint file for use with RosettaRemodel'''
-    None
+def makeBlueprint(blueprint,region):
+    '''Generates the blueprint file for use with RosettaRemodel.
+    blueprint = target file to save blueprint e.g. blueprint.bpt
+    region = tuple of beginning and end residue numbers of alanine region'''
+    #empty region
+    if region == (0,0): return
+    for i in range(region[0],region[1]+1):
+        blueprint.write("%i A E ALLAA\n"%(i))
 
 def runMinimization():
     None
